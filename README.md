@@ -1,2 +1,2 @@
 # funda-mental
-Analyzing real estate data from funda.com 
+Analyzing real estate data from funda.nl
