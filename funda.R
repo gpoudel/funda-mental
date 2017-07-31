@@ -61,4 +61,11 @@ utrecht.df <- city.db('utrecht', utrecht.info[1], utrecht.info[2])
 
 
 
+names(utrecht.df)[names(utrecht.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
+
+utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,AantalKamers,Adres,GlobalId,Id,IsSearchable,Koopprijs,KoopprijsTot,MakelaarId,MakelaarNaam,MobileURL,Oppervlakte,Perceeloppervlakte,Postcode,Prijs,Producten,URL,VerkoopStatus,WGS84_X,WGS84_Y,WoonOppervlakteTot,Woonoppervlakte,Woonplaats,ZoekType,SoortAanbod,Soort_aanbod)
+
+
+
+
 
