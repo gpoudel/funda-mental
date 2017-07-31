@@ -43,7 +43,7 @@ city.db <- function(location,total.houses,total.pages) {
     
      for (j in 1:25)
      {
-       try(city.df <- rbind(city.df,t(city$Objects[[j]])))
+       try(city.df <- rbind(city.df,t(city$Objects[[j]])), silent = TRUE)
        
      }
     
@@ -61,9 +61,41 @@ utrecht.df <- city.db('utrecht', utrecht.info[1], utrecht.info[2])
 
 
 
+utrecht.df <- data.table(utrecht.df)
+
 names(utrecht.df)[names(utrecht.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
 
-utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,AantalKamers,Adres,GlobalId,Id,IsSearchable,Koopprijs,KoopprijsTot,MakelaarId,MakelaarNaam,MobileURL,Oppervlakte,Perceeloppervlakte,Postcode,Prijs,Producten,URL,VerkoopStatus,WGS84_X,WGS84_Y,WoonOppervlakteTot,Woonoppervlakte,Woonplaats,ZoekType,SoortAanbod,Soort_aanbod)
+utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
+                                    AantalKamers,
+                                    Adres,
+                                    GlobalId,
+                                    Id,
+                                    IsSearchable,
+                                    Koopprijs,
+                                    KoopprijsTot,
+                                    MakelaarId,
+                                    MakelaarNaam,
+                                    MobileURL,
+                                    Oppervlakte,
+                                    Perceeloppervlakte,
+                                    Postcode,
+                                    Prijs,
+                                    Producten,
+                                    URL,
+                                    VerkoopStatus,
+                                    WGS84_X,
+                                    WGS84_Y,
+                                    WoonOppervlakteTot,
+                                    Woonoppervlakte,
+                                    Woonplaats,
+                                    ZoekType,
+                                    SoortAanbod,
+                                    Soort_aanbod)
+
+
+
+
+
 
 
 
