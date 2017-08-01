@@ -72,6 +72,7 @@ if (nrow(utrecht.df) == length(unique(utrecht.df$Id))) { print("True") }
 
 #Also check if some fields have only 0 or one value (True) using unique(utrecht.df$<fieldname>) - if so tey may be removed from DF as well
 
+#Reduce the DF, select more relevents columns only
 utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
                                     AantalKamers,
                                     Adres,
@@ -82,7 +83,6 @@ utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
                                     MakelaarId,
                                     MakelaarNaam,
                                     MobileURL,
-                                    Oppervlakte,
                                     Perceeloppervlakte,
                                     Postcode,
                                     Producten,
