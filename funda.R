@@ -65,12 +65,18 @@ utrecht.df <- data.table(utrecht.df)
 
 names(utrecht.df)[names(utrecht.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
 
+
+#checking if GlobalId is indeed the unique key - which it looks like
+if (nrow(utrecht.df) == length(unique(utrecht.df$Id))) { print("True") }
+
+
+#Also check if some fields have only 0 or one value (True) using unique(utrecht.df$<fieldname>) - if so tey may be removed from DF as well
+
 utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
                                     AantalKamers,
                                     Adres,
                                     GlobalId,
-                                    Id,
-                                    IsSearchable,
+                                    Id,                                    
                                     Koopprijs,
                                     KoopprijsTot,
                                     MakelaarId,
@@ -79,7 +85,6 @@ utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
                                     Oppervlakte,
                                     Perceeloppervlakte,
                                     Postcode,
-                                    Prijs,
                                     Producten,
                                     URL,
                                     VerkoopStatus,
@@ -88,8 +93,6 @@ utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
                                     WoonOppervlakteTot,
                                     Woonoppervlakte,
                                     Woonplaats,
-                                    ZoekType,
-                                    SoortAanbod,
                                     Soort_aanbod)
 
 
