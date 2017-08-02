@@ -103,8 +103,11 @@ utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
 #format the price to be displayed on normal integer format instead of exponential foramt
 utrecht.df$Koopprijs <- format(utrecht.df$Koopprijs, scientific=FALSE)
 
+#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
+utrecht.df$Woonoppervlakte <- as.numeric(as.character(utrecht.df$Woonoppervlakte))
 
-
+utrecht.df$Koopprijs <- as.numeric(utrecht.df$Koopprijs)
+utrecht.df$Soort_aanbod <- as.character((utrecht.df$Soort_aanbod))
 
 ggplot(utrecht.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
 
