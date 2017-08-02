@@ -72,14 +72,19 @@ if (nrow(utrecht.df) == length(unique(utrecht.df$Id))) { print("True") }
 
 #Also check if some fields have only 0 or one value (True) using unique(utrecht.df$<fieldname>) - if so tey may be removed from DF as well
 
+
+#Identical columns can be removed as well - function "identical" 
+#identical(utrecht.df$WoonOppervlakteTot, utrecht.df$WoonOppervlakte)
+#identical(utrecht.df$KoopprijsTot, utrecht.df$KoopprijsTot)
+#utrecht.df <- utrecht.df %>% select(-KoopprijsTot, -WoonOppervlakteTot, -Id)
+
+
 #Reduce the DF, select more relevents columns only
 utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
                                     AantalKamers,
                                     Adres,
-                                    GlobalId,
-                                    Id,                                    
+                                    GlobalId,                                 
                                     Koopprijs,
-                                    KoopprijsTot,
                                     MakelaarId,
                                     MakelaarNaam,
                                     MobileURL,
@@ -90,17 +95,18 @@ utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
                                     VerkoopStatus,
                                     WGS84_X,
                                     WGS84_Y,
-                                    WoonOppervlakteTot,
                                     Woonoppervlakte,
                                     Woonplaats,
                                     Soort_aanbod)
 
 
+#format the price to be displayed on normal integer format instead of exponential foramt
+utrecht.df$Koopprijs <- format(utrecht.df$Koopprijs, scientific=FALSE)
 
 
 
 
-
+ggplot(utrecht.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
 
 
 
