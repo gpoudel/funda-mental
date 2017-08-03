@@ -55,19 +55,19 @@ city.db <- function(location,total.houses,total.pages) {
 
 
 
-utrecht.info <- total.houses('utrecht')
 
-utrecht.df <- city.db('utrecht', utrecht.info[1], utrecht.info[2])
-
+#-------------------Utrecht-----------------------------
 
 
-utrecht.df <- data.table(utrecht.df)
+utc.info <- total.houses('utrecht')
+utc.df <- city.db('utrecht', utc.info[1], utc.info[2])
+utc.df <- data.table(utc.df)
 
-names(utrecht.df)[names(utrecht.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
+names(utc.df)[names(utc.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
 
 
 #checking if GlobalId is indeed the unique key - which it looks like
-if (nrow(utrecht.df) == length(unique(utrecht.df$Id))) { print("True") }
+if (nrow(utc.df) == length(unique(utc.df$Id))) { print("True") }
 
 
 #Also check if some fields have only 0 or one value (True) using unique(utrecht.df$<fieldname>) - if so tey may be removed from DF as well
@@ -80,7 +80,7 @@ if (nrow(utrecht.df) == length(unique(utrecht.df$Id))) { print("True") }
 
 
 #Reduce the DF, select more relevents columns only
-utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
+utc.df <- utc.df %>% select(AangebodenSindsTekst,
                                     AantalKamers,
                                     Adres,
                                     GlobalId,                                 
@@ -101,15 +101,183 @@ utrecht.df <- utrecht.df %>% select(AangebodenSindsTekst,
 
 
 #format the price to be displayed on normal integer format instead of exponential foramt
-utrecht.df$Koopprijs <- format(utrecht.df$Koopprijs, scientific=FALSE)
+utc.df$Koopprijs <- format(utc.df$Koopprijs, scientific=FALSE)
 
 #'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
-utrecht.df$Woonoppervlakte <- as.numeric(as.character(utrecht.df$Woonoppervlakte))
+utc.df$Woonoppervlakte <- as.numeric(as.character(utc.df$Woonoppervlakte))
 
-utrecht.df$Koopprijs <- as.numeric(utrecht.df$Koopprijs)
-utrecht.df$Soort_aanbod <- as.character((utrecht.df$Soort_aanbod))
+#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
+utc.df$Perceeloppervlakte <- as.numeric(as.character(utc.df$Perceeloppervlakte))
 
-ggplot(utrecht.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+
+utc.df$Koopprijs <- as.numeric(utc.df$Koopprijs)
+utc.df$Soort_aanbod <- as.character((utc.df$Soort_aanbod))
+
+
+ggplot(utc.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(utc.df[which(utc.df$Woonoppervlakte <= 400 & utc.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(utc.df[which(utc.df$Soort_aanbod == 'parkeergelegenheid' | utc.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+
+
+
+
+#-------------------Amsterdam-----------------------------
+
+
+
+ams.info <- total.houses('amsterdam')
+ams.df <- city.db('amsterdam', ams.info[1], ams.info[2])
+ams.df <- data.table(ams.df)
+
+names(ams.df)[names(ams.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
+
+#Reduce the DF, select more relevents columns only
+ams.df <- ams.df %>% select(AangebodenSindsTekst,
+                                    AantalKamers,
+                                    Adres,
+                                    GlobalId,                                 
+                                    Koopprijs,
+                                    MakelaarId,
+                                    MakelaarNaam,
+                                    MobileURL,
+                                    Perceeloppervlakte,
+                                    Postcode,
+                                    Producten,
+                                    URL,
+                                    VerkoopStatus,
+                                    WGS84_X,
+                                    WGS84_Y,
+                                    Woonoppervlakte,
+                                    Woonplaats,
+                                    Soort_aanbod)
+
+
+#format the price to be displayed on normal integer format instead of exponential foramt
+ams.df$Koopprijs <- format(ams.df$Koopprijs, scientific=FALSE)
+
+#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
+ams.df$Woonoppervlakte <- as.numeric(as.character(ams.df$Woonoppervlakte))
+
+#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
+ams.df$Perceeloppervlakte <- as.numeric(as.character(ams.df$Perceeloppervlakte))
+
+ams.df$Koopprijs <- as.numeric(ams.df$Koopprijs)
+ams.df$Soort_aanbod <- as.character((ams.df$Soort_aanbod))
+
+ggplot(ams.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(ams.df[which(ams.df$Woonoppervlakte <= 400 & ams.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(ams.df[which(ams.df$Soort_aanbod == 'parkeergelegenheid' | ams.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+
+
+
+
+#-------------------Rotterdam-----------------------------
+
+
+
+rtm.info <- total.houses('rotterdam')
+rtm.df <- city.db('rotterdam', rtm.info[1], rtm.info[2])
+rtm.df <- data.table(rtm.df)
+
+names(rtm.df)[names(rtm.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
+
+#Reduce the DF, select more relevents columns only
+rtm.df <- rtm.df %>% select(AangebodenSindsTekst,
+                                    AantalKamers,
+                                    Adres,
+                                    GlobalId,                                 
+                                    Koopprijs,
+                                    MakelaarId,
+                                    MakelaarNaam,
+                                    MobileURL,
+                                    Perceeloppervlakte,
+                                    Postcode,
+                                    Producten,
+                                    URL,
+                                    VerkoopStatus,
+                                    WGS84_X,
+                                    WGS84_Y,
+                                    Woonoppervlakte,
+                                    Woonplaats,
+                                    Soort_aanbod)
+
+
+#format the price to be displayed on normal integer format instead of exponential foramt
+rtm.df$Koopprijs <- format(rtm.df$Koopprijs, scientific=FALSE)
+
+#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
+rtm.df$Woonoppervlakte <- as.numeric(as.character(rtm.df$Woonoppervlakte))
+
+#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
+rtm.df$Perceeloppervlakte <- as.numeric(as.character(rtm.df$Perceeloppervlakte))
+
+
+rtm.df$Koopprijs <- as.numeric(rtm.df$Koopprijs)
+rtm.df$Soort_aanbod <- as.character((rtm.df$Soort_aanbod))
+
+
+ggplot(rtm.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(rtm.df[which(rtm.df$Woonoppervlakte <= 400 & rtm.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(rtm.df[which(rtm.df$Soort_aanbod == 'parkeergelegenheid' | rtm.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+
+
+
+
+#-------------------Den Haag-----------------------------
+
+
+
+hag.info <- total.houses('denhaag')
+hag.df <- city.db('denhaag', hag.info[1], hag.info[2])
+hag.df <- data.table(hag.df)
+
+names(hag.df)[names(hag.df) == 'Soort-aanbod'] <- 'Soort_aanbod'
+
+#Reduce the DF, select more relevents columns only
+hag.df <- hag.df %>% select(AangebodenSindsTekst,
+                                    AantalKamers,
+                                    Adres,
+                                    GlobalId,                                 
+                                    Koopprijs,
+                                    MakelaarId,
+                                    MakelaarNaam,
+                                    MobileURL,
+                                    Perceeloppervlakte,
+                                    Postcode,
+                                    Producten,
+                                    URL,
+                                    VerkoopStatus,
+                                    WGS84_X,
+                                    WGS84_Y,
+                                    Woonoppervlakte,
+                                    Woonplaats,
+                                    Soort_aanbod)
+
+
+#format the price to be displayed on normal integer format instead of exponential foramt
+hag.df$Koopprijs <- format(hag.df$Koopprijs, scientific=FALSE)
+
+#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
+hag.df$Woonoppervlakte <- as.numeric(as.character(hag.df$Woonoppervlakte))
+
+#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
+hag.df$Perceeloppervlakte <- as.numeric(as.character(hag.df$Perceeloppervlakte))
+
+
+hag.df$Koopprijs <- as.numeric(hag.df$Koopprijs)
+hag.df$Soort_aanbod <- as.character((hag.df$Soort_aanbod))
+
+
+
+
+
+ggplot(hag.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(hag.df[which(hag.df$Woonoppervlakte <= 400 & hag.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(hag.df[which(hag.df$Soort_aanbod == 'parkeergelegenheid' | hag.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+
+
+
+
 
 
 
