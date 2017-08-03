@@ -273,9 +273,21 @@ hag.df$Soort_aanbod <- as.character((hag.df$Soort_aanbod))
 
 ggplot(hag.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
 ggplot(hag.df[which(hag.df$Woonoppervlakte <= 400 & hag.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(hag.df[which(hag.df$Soort_aanbod == 'parkeergelegenheid' | hag.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
+ggplot(hag.df[which(hag.df$Soort_aanbod == 'parkeergelegenheid' | hag.df$Soort_aanbod == 'bouwgrond')], aes(Perceeloppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
 
 
+
+
+#-------------------All 4 Cities ----------------------
+
+#Now lets combine all 4 DFs 
+
+
+randstads <- rbind(ams.df, utc.df, hag.df, rtm.df)
+
+randstads$Woonplaats <- as.character(randstads$Woonplaats)
+
+ggplot(randstads[which(randstads$Woonoppervlakte <= 400 & randstads$Koopprijs <= 1000000)], aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point()
 
 
 
