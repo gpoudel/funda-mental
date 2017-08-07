@@ -100,30 +100,8 @@ utc.df <- utc.df %>% select(AangebodenSindsTekst,
                                     Soort_aanbod)
 
 
-#format the price to be displayed on normal integer format instead of exponential foramt
-utc.df$Koopprijs <- format(utc.df$Koopprijs, scientific=FALSE)
-
-#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
-utc.df$Woonoppervlakte <- as.numeric(as.character(utc.df$Woonoppervlakte))
-
-#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
-utc.df$Perceeloppervlakte <- as.numeric(as.character(utc.df$Perceeloppervlakte))
-
-
-utc.df$Koopprijs <- as.numeric(utc.df$Koopprijs)
-utc.df$Soort_aanbod <- as.character((utc.df$Soort_aanbod))
-
-
-ggplot(utc.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(utc.df[which(utc.df$Woonoppervlakte <= 400 & utc.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(utc.df[which(utc.df$Soort_aanbod == 'parkeergelegenheid' | utc.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-
-
-
-
+									
 #-------------------Amsterdam-----------------------------
-
-
 
 ams.info <- total.houses('amsterdam')
 ams.df <- city.db('amsterdam', ams.info[1], ams.info[2])
@@ -151,29 +129,9 @@ ams.df <- ams.df %>% select(AangebodenSindsTekst,
                                     Woonplaats,
                                     Soort_aanbod)
 
-
-#format the price to be displayed on normal integer format instead of exponential foramt
-ams.df$Koopprijs <- format(ams.df$Koopprijs, scientific=FALSE)
-
-#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
-ams.df$Woonoppervlakte <- as.numeric(as.character(ams.df$Woonoppervlakte))
-
-#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
-ams.df$Perceeloppervlakte <- as.numeric(as.character(ams.df$Perceeloppervlakte))
-
-ams.df$Koopprijs <- as.numeric(ams.df$Koopprijs)
-ams.df$Soort_aanbod <- as.character((ams.df$Soort_aanbod))
-
-ggplot(ams.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(ams.df[which(ams.df$Woonoppervlakte <= 400 & ams.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(ams.df[which(ams.df$Soort_aanbod == 'parkeergelegenheid' | ams.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-
-
-
+									
 
 #-------------------Rotterdam-----------------------------
-
-
 
 rtm.info <- total.houses('rotterdam')
 rtm.df <- city.db('rotterdam', rtm.info[1], rtm.info[2])
@@ -201,31 +159,9 @@ rtm.df <- rtm.df %>% select(AangebodenSindsTekst,
                                     Woonplaats,
                                     Soort_aanbod)
 
-
-#format the price to be displayed on normal integer format instead of exponential foramt
-rtm.df$Koopprijs <- format(rtm.df$Koopprijs, scientific=FALSE)
-
-#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
-rtm.df$Woonoppervlakte <- as.numeric(as.character(rtm.df$Woonoppervlakte))
-
-#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
-rtm.df$Perceeloppervlakte <- as.numeric(as.character(rtm.df$Perceeloppervlakte))
-
-
-rtm.df$Koopprijs <- as.numeric(rtm.df$Koopprijs)
-rtm.df$Soort_aanbod <- as.character((rtm.df$Soort_aanbod))
-
-
-ggplot(rtm.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(rtm.df[which(rtm.df$Woonoppervlakte <= 400 & rtm.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(rtm.df[which(rtm.df$Soort_aanbod == 'parkeergelegenheid' | rtm.df$Soort_aanbod == 'bouwgrond')], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-
-
-
-
+									
+									
 #-------------------Den Haag-----------------------------
-
-
 
 hag.info <- total.houses('denhaag')
 hag.df <- city.db('denhaag', hag.info[1], hag.info[2])
@@ -254,40 +190,56 @@ hag.df <- hag.df %>% select(AangebodenSindsTekst,
                                     Soort_aanbod)
 
 
-#format the price to be displayed on normal integer format instead of exponential foramt
-hag.df$Koopprijs <- format(hag.df$Koopprijs, scientific=FALSE)
-
-#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
-hag.df$Woonoppervlakte <- as.numeric(as.character(hag.df$Woonoppervlakte))
-
-#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
-hag.df$Perceeloppervlakte <- as.numeric(as.character(hag.df$Perceeloppervlakte))
-
-
-hag.df$Koopprijs <- as.numeric(hag.df$Koopprijs)
-hag.df$Soort_aanbod <- as.character((hag.df$Soort_aanbod))
-
-
-
-
-
-ggplot(hag.df, aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(hag.df[which(hag.df$Woonoppervlakte <= 400 & hag.df$Koopprijs <= 500000)], aes(Woonoppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-ggplot(hag.df[which(hag.df$Soort_aanbod == 'parkeergelegenheid' | hag.df$Soort_aanbod == 'bouwgrond')], aes(Perceeloppervlakte, Koopprijs,  colour = Soort_aanbod)) + geom_point()
-
-
-
 
 #-------------------All 4 Cities ----------------------
 
 #Now lets combine all 4 DFs 
+randstad <- rbind(ams.df, utc.df, hag.df, rtm.df)
 
 
-randstads <- rbind(ams.df, utc.df, hag.df, rtm.df)
+#remove the individual city data
+rm(ams.df, ams.info, utc.df, utc.info, rtm.df, rtm.info, hag.df, hag.info)
 
-randstads$Woonplaats <- as.character(randstads$Woonplaats)
+#format the price to be displayed on normal integer format instead of exponential foramt
+randstad$Koopprijs <- format(randstad$Koopprijs, scientific=FALSE)
 
-ggplot(randstads[which(randstads$Woonoppervlakte <= 400 & randstads$Koopprijs <= 1000000)], aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point()
+
+#the columns are in 'list' type so we need to change that
+randstad$Woonplaats <- as.character(randstad$Woonplaats)
+randstad$Koopprijs <- as.numeric(randstad$Koopprijs)
+randstad$Soort_aanbod <- as.character((randstad$Soort_aanbod))
+
+
+#'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
+randstad$Woonoppervlakte <- as.numeric(as.character(randstad$Woonoppervlakte))
+
+#'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
+randstad$Perceeloppervlakte <- as.numeric(as.character(randstad$Perceeloppervlakte))
+
+
+#the data consists of properties like parking lots or just land, lets focus on house and apratements only for now
+randstad <- data.table(randstad %>% filter(Soort_aanbod == "woonhuis" | Soort_aanbod == "appartement"))
+
+
+
+
+
+#--------------------Vizs----------------------------
+
+#turn off the scientific notations
+options(scipen=999)
+
+
+df <- randstad[which(randstad$Woonoppervlakte <= 400 & randstad$Koopprijs <= 1000000)]
+
+ggplot(df, aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point() + facet_grid(Woonplaats~.)
+
+ggplot(df, aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point() + facet_grid(Woonplaats~.) + coord_cartesian(xlim = c(0,100)) + theme_bw()
+
+
+
+
+
 
 
 
