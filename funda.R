@@ -9,7 +9,7 @@ library("tidyverse")
 library("RJSONIO")
 library("DT")
 library("data.table")
-
+library("cowplot")
 
 results_per_page <- 25  #This (25) is the max possible and hard coaded
 
@@ -212,6 +212,8 @@ randstad$Soort_aanbod <- as.character((randstad$Soort_aanbod))
 
 #'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
 randstad$Woonoppervlakte <- as.numeric(as.character(randstad$Woonoppervlakte))
+randstad$AantalKamers <- as.numeric(as.character(randstad$AantalKamers))
+
 
 #'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
 randstad$Perceeloppervlakte <- as.numeric(as.character(randstad$Perceeloppervlakte))
@@ -232,14 +234,46 @@ options(scipen=999)
 
 df <- randstad[which(randstad$Woonoppervlakte <= 400 & randstad$Koopprijs <= 1000000)]
 
-ggplot(df, aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point() + facet_grid(Woonplaats~.)
+ggplot(df, aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
 
 ggplot(df, aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point() + facet_grid(Woonplaats~.) + coord_cartesian(xlim = c(0,100)) + theme_bw()
 
 
 
+print(ggplot(df,aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10)) + theme_bw()
+print(ggplot(df,aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000)) + theme_bw()
 
 
+
+
+
+amsArea <- ggplot(df %>% filter(Woonplaats == "Amsterdam"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
+rtmArea <- ggplot(df %>% filter(Woonplaats == "Rotterdam"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
+hagArea <- ggplot(df %>% filter(Woonplaats == "Den Haag"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
+utcArea <- ggplot(df %>% filter(Woonplaats == "Utrecht"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
+
+
+plot_grid(amsArea, rtmArea, hagArea, utcArea, 
+          labels = c("Ams", "Rtm", "Hag", "Utc"),
+          ncol = 2, nrow = 2)
+
+
+
+
+amsPrice <- ggplot(df %>% filter(Woonplaats == "Amsterdam"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
+rtmPrice <- ggplot(df %>% filter(Woonplaats == "Rotterdam"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
+hagPrice <- ggplot(df %>% filter(Woonplaats == "Den Haag"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
+utcPrice <- ggplot(df %>% filter(Woonplaats == "Utrecht"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
+
+plot_grid(amsPrice, rtmPrice, hagPrice, utcPrice, 
+          labels = c("Ams", "Rtm", "Hag", "Utc"),
+          ncol = 2, nrow = 2)
+
+
+
+print(ggplot(df,aes(Woonoppervlakte, colour = Woonplaats)) + geom_histogram(binwidth = 10)) + theme_bw()
+print(ggplot(df,aes(Koopprijs, colour = Woonplaats)) + geom_histogram(binwidth = 50000))
+print(ggplot(df,aes(AantalKamers, colour = Woonplaats)) + geom_histogram(binwidth = 1))
 
 
 
