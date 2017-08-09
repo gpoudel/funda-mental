@@ -276,6 +276,20 @@ print(ggplot(df,aes(Koopprijs, colour = Woonplaats)) + geom_histogram(binwidth =
 print(ggplot(df,aes(AantalKamers, colour = Woonplaats)) + geom_histogram(binwidth = 1))
 
 
+utcPC <- ggplot(df %>% filter(Woonplaats == "Utrecht"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
+amsPC <- ggplot(df %>% filter(Woonplaats == "Amsterdam"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
+rtmPC <- ggplot(df %>% filter(Woonplaats == "Rotterdam"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
+hagPC <- ggplot(df %>% filter(Woonplaats == "Den Haag"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
+
+
+
+plot_grid(amsPC, rtmPC, hagPC, utcPC, 
+          labels = c("Ams", "Rtm", "Hag", "Utc"),
+          ncol = 1, nrow = 4)
+
+
+ggplot(df %>% filter(Woonplaats == "Utrecht"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_boxplot() + facet_grid(Woonplaats~.)+ theme_bw()
+
 
 
 
