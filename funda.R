@@ -200,27 +200,40 @@ randstad <- rbind(ams.df, utc.df, hag.df, rtm.df)
 #remove the individual city data
 rm(ams.df, ams.info, utc.df, utc.info, rtm.df, rtm.info, hag.df, hag.info)
 
+
+
+colnames(randstad) <- c("DaysSince", "NumberOfRooms", "Address", "GlobalId", "Price", "AgentId", 
+                         "AgentName", "MobileURL", "PlotArea", "Postcode", "Products", "URL", 
+                         "SalesStatus", "WGS84_X", "WGS84_Y", "LivingArea", "City", "PropertyType" )
+
+
+
 #format the price to be displayed on normal integer format instead of exponential foramt
-randstad$Koopprijs <- format(randstad$Koopprijs, scientific=FALSE)
+randstad$Price <- format(randstad$Price, scientific=FALSE)
+
+
+#Format the text string of 'DaysSince' inofrmation for which the "on market period" is more than 6 months
+randstad$DaysSince <- as.character(randstad$DaysSince)
+randstad[which(randstad$DaysSince == "<span title=\"langer dan 6 maanden\">6+ maanden</span>")]$DaysSince <- "6+ maanden"
 
 
 #the columns are in 'list' type so we need to change that
-randstad$Woonplaats <- as.character(randstad$Woonplaats)
-randstad$Koopprijs <- as.numeric(randstad$Koopprijs)
-randstad$Soort_aanbod <- as.character((randstad$Soort_aanbod))
+randstad$City <- as.character(randstad$City)
+randstad$Price <- as.numeric(randstad$Price)
+randstad$PropertyType <- as.character((randstad$PropertyType))
 
 
 #'Woonoppervlakte' has null values, below statemnt will assing NA  to them by coercion
-randstad$Woonoppervlakte <- as.numeric(as.character(randstad$Woonoppervlakte))
-randstad$AantalKamers <- as.numeric(as.character(randstad$AantalKamers))
+randstad$LivingArea <- as.numeric(as.character(randstad$LivingArea))
+randstad$NumberOfRooms <- as.numeric(as.character(randstad$NumberOfRooms))
 
 
 #'Perceeloppervlakte' has null values, below statemnt will assing NA  to them by coercion
-randstad$Perceeloppervlakte <- as.numeric(as.character(randstad$Perceeloppervlakte))
+randstad$PlotArea <- as.numeric(as.character(randstad$PlotArea))
 
 
 #the data consists of properties like parking lots or just land, lets focus on house and apratements only for now
-randstad <- data.table(randstad %>% filter(Soort_aanbod == "woonhuis" | Soort_aanbod == "appartement"))
+randstad <- data.table(randstad %>% filter(PropertyType == "woonhuis" | PropertyType == "appartement"))
 
 
 
@@ -232,25 +245,25 @@ randstad <- data.table(randstad %>% filter(Soort_aanbod == "woonhuis" | Soort_aa
 options(scipen=999)
 
 
-df <- randstad[which(randstad$Woonoppervlakte <= 400 & randstad$Koopprijs <= 1000000)]
+df <- randstad[which(randstad$LivingArea <= 400 & randstad$Price <= 1000000)]
 
-ggplot(df, aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
+ggplot(df, aes(LivingArea, Price,  colour = City)) + geom_point() + facet_grid(City~.)+ theme_bw()
 
-ggplot(df, aes(Woonoppervlakte, Koopprijs,  colour = Woonplaats)) + geom_point() + facet_grid(Woonplaats~.) + coord_cartesian(xlim = c(0,100)) + theme_bw()
-
-
-
-print(ggplot(df,aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10)) + theme_bw()
-print(ggplot(df,aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000)) + theme_bw()
+ggplot(df, aes(LivingArea, Price,  colour = City)) + geom_point() + facet_grid(City~.) + coord_cartesian(xlim = c(0,50), ylim = c(0,500000)) + theme_bw()
 
 
 
+print(ggplot(df,aes(LivingArea, colour = PropertyType)) + geom_histogram(binwidth = 10)) + theme_bw()
+print(ggplot(df,aes(Price, colour = PropertyType)) + geom_histogram(binwidth = 50000)) + theme_bw()
 
 
-amsArea <- ggplot(df %>% filter(Woonplaats == "Amsterdam"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
-rtmArea <- ggplot(df %>% filter(Woonplaats == "Rotterdam"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
-hagArea <- ggplot(df %>% filter(Woonplaats == "Den Haag"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
-utcArea <- ggplot(df %>% filter(Woonplaats == "Utrecht"),aes(Woonoppervlakte, colour = Soort_aanbod)) + geom_histogram(binwidth = 10) + theme_bw()
+
+
+
+amsArea <- ggplot(df %>% filter(City == "Amsterdam"),aes(LivingArea, colour = PropertyType)) + geom_histogram(binwidth = 10) + theme_bw()
+rtmArea <- ggplot(df %>% filter(City == "Rotterdam"),aes(LivingArea, colour = PropertyType)) + geom_histogram(binwidth = 10) + theme_bw()
+hagArea <- ggplot(df %>% filter(City == "Den Haag"),aes(LivingArea, colour = PropertyType)) + geom_histogram(binwidth = 10) + theme_bw()
+utcArea <- ggplot(df %>% filter(City == "Utrecht"),aes(LivingArea, colour = PropertyType)) + geom_histogram(binwidth = 10) + theme_bw()
 
 
 plot_grid(amsArea, rtmArea, hagArea, utcArea, 
@@ -260,10 +273,10 @@ plot_grid(amsArea, rtmArea, hagArea, utcArea,
 
 
 
-amsPrice <- ggplot(df %>% filter(Woonplaats == "Amsterdam"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
-rtmPrice <- ggplot(df %>% filter(Woonplaats == "Rotterdam"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
-hagPrice <- ggplot(df %>% filter(Woonplaats == "Den Haag"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
-utcPrice <- ggplot(df %>% filter(Woonplaats == "Utrecht"),aes(Koopprijs, colour = Soort_aanbod)) + geom_histogram(binwidth = 50000) + theme_bw()
+amsPrice <- ggplot(df %>% filter(City == "Amsterdam"),aes(Price, colour = PropertyType)) + geom_histogram(binwidth = 50000) + theme_bw()
+rtmPrice <- ggplot(df %>% filter(City == "Rotterdam"),aes(Price, colour = PropertyType)) + geom_histogram(binwidth = 50000) + theme_bw()
+hagPrice <- ggplot(df %>% filter(City == "Den Haag"),aes(Price, colour = PropertyType)) + geom_histogram(binwidth = 50000) + theme_bw()
+utcPrice <- ggplot(df %>% filter(City == "Utrecht"),aes(Price, colour = PropertyType)) + geom_histogram(binwidth = 50000) + theme_bw()
 
 plot_grid(amsPrice, rtmPrice, hagPrice, utcPrice, 
           labels = c("Ams", "Rtm", "Hag", "Utc"),
@@ -271,15 +284,15 @@ plot_grid(amsPrice, rtmPrice, hagPrice, utcPrice,
 
 
 
-print(ggplot(df,aes(Woonoppervlakte, colour = Woonplaats)) + geom_histogram(binwidth = 10)) + theme_bw()
-print(ggplot(df,aes(Koopprijs, colour = Woonplaats)) + geom_histogram(binwidth = 50000))
-print(ggplot(df,aes(AantalKamers, colour = Woonplaats)) + geom_histogram(binwidth = 1))
+print(ggplot(df,aes(LivingArea, colour = City)) + geom_histogram(binwidth = 10)) + theme_bw()
+print(ggplot(df,aes(Price, colour = City)) + geom_histogram(binwidth = 50000))
+print(ggplot(df,aes(NumberOfRooms, colour = City)) + geom_histogram(binwidth = 1))
 
 
-utcPC <- ggplot(df %>% filter(Woonplaats == "Utrecht"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
-amsPC <- ggplot(df %>% filter(Woonplaats == "Amsterdam"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
-rtmPC <- ggplot(df %>% filter(Woonplaats == "Rotterdam"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
-hagPC <- ggplot(df %>% filter(Woonplaats == "Den Haag"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_point() + facet_grid(Woonplaats~.)+ theme_bw()
+utcPC <- ggplot(df %>% filter(City == "Utrecht"), aes(substr(Postcode,1,4), Price,  colour = PropertyType)) + geom_point() + facet_grid(City~.)+ theme_bw()
+amsPC <- ggplot(df %>% filter(City == "Amsterdam"), aes(substr(Postcode,1,4), Price,  colour = PropertyType)) + geom_point() + facet_grid(City~.)+ theme_bw()
+rtmPC <- ggplot(df %>% filter(City == "Rotterdam"), aes(substr(Postcode,1,4), Price,  colour = PropertyType)) + geom_point() + facet_grid(City~.)+ theme_bw()
+hagPC <- ggplot(df %>% filter(City == "Den Haag"), aes(substr(Postcode,1,4), Price,  colour = PropertyType)) + geom_point() + facet_grid(City~.)+ theme_bw()
 
 
 
@@ -288,7 +301,7 @@ plot_grid(amsPC, rtmPC, hagPC, utcPC,
           ncol = 1, nrow = 4)
 
 
-ggplot(df %>% filter(Woonplaats == "Utrecht"), aes(substr(Postcode,1,4), Koopprijs,  colour = Soort_aanbod)) + geom_boxplot() + facet_grid(Woonplaats~.)+ theme_bw()
+ggplot(df %>% filter(City == "Utrecht"), aes(substr(Postcode,1,4), Price,  colour = PropertyType)) + geom_boxplot() + facet_grid(City~.)+ theme_bw()
 
 
 
