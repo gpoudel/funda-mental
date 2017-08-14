@@ -64,7 +64,7 @@ plot_grid(amsPC, rtmPC, hagPC, utcPC,
           ncol = 1, nrow = 4)
 
 
-ggplot(df %>% filter(City == "Utrecht"), aes(substr(Postcode,1,4), Price,  colour = PropertyType)) + geom_boxplot() + facet_grid(City~.)+ theme_bw()
+ggplot(df %>% filter(City == "Utrecht"), aes(substr(Postcode,1,4), Price,  colour = PropertyType)) + geom_boxplot() + facet_grid(City~.)+ theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
 
