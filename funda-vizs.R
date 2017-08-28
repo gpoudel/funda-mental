@@ -8,7 +8,7 @@ randstad <- read.csv("randstad.csv", sep = ";", header = T)
 options(scipen=999)
 
 
-df <- randstad[which(randstad$LivingArea <= 400 & randstad$Price <= 1000000)]
+df <- randstad[which(randstad$LivingArea <= 400 & randstad$Price <= 1000000),]
 
 ggplot(df, aes(LivingArea, Price,  colour = City)) + geom_point() + facet_grid(City~.)+ theme_bw()
 
