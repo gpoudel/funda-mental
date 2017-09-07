@@ -1,6 +1,8 @@
 # funda-mental
 Analyzing real estate data from funda.nl
 
+
+
 ## PART I - Making the data ready (Extract, Transform & Save)
 ---------------------------------------------------------------
 I stumbled upon open data api of funda and thought it might be intresting to do a very small project. I did not stated this with anything particular in mind other than just playing with data. 
